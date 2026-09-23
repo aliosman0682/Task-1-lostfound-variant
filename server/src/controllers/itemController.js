@@ -18,7 +18,8 @@ const createSchema = Joi.object({
 // Same fields as create, but nothing is required and an empty body is rejected.
 const updateSchema = createSchema
   .fork(['title'], (field) => field.optional())
-  .min(1);
+  .min(1)
+  .messages({ 'object.min': 'Request body is empty: send at least one field as JSON (Content-Type: application/json)' });
 
 const filterSchema = Joi.object({
   status: Joi.string().valid(...STATUSES),
