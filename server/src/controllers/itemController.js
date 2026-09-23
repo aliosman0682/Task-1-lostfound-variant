@@ -2,7 +2,9 @@ import Joi from 'joi';
 import mongoose from 'mongoose';
 import { Item, CATEGORIES, STATUSES } from '../models/Item.js';
 
-const objectId = Joi.string().hex().length(24);
+// Trim first so an id copied with stray spaces/newlines still validates.
+const objectId = Joi.string().trim().hex().length(24)
+  .messages({ '*': '{{#label}} must be a valid user id (24 hex characters, e.g. from GET /api/users)' });
 
 const createSchema = Joi.object({
   title: Joi.string().trim().min(2).max(100).required(),
